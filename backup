@@ -1,0 +1,54 @@
+#include "Asteroid.h"
+
+Asteroid::Asteroid(int x,int y,char s)
+{
+	xco=x; yco=y; size=s;
+	if(size=='s')
+		rad=20;
+	else
+	{
+		if(size=='m')		
+			rad=40;
+		else
+			rad=60;
+	}
+	int rndpoints=GetRandInRange(0,9);
+	npoints = rand()% 9;
+	//cout << npoints << endl;
+	dtheta = 360 / npoints;
+	// using the formula rcostheta and rsin theta;
+	theta[0] = GetRandInRange(0, dtheta);
+	sx = xco + rad * cos(Deg2Rad(theta[0]));
+	 sy = yco + rad * sin(Deg2Rad(theta[0]));
+	 int stheta=dtheta;
+	  for(int i=0;i<10;i++)
+	 {
+		 theta[i] = 0;
+	 }
+	 for(int i=0;i<npoints-1;i++)
+	 {
+		 theta[i] = GetRandInRange(stheta, stheta + dtheta);
+		 stheta+=dtheta;
+	 }
+	for(int i=0;i<npoints-1;i++)
+	 {
+		 cout<<theta[i]<<endl;
+	 }
+
+}
+
+void Asteroid::DrawAsteroid(ColorNames color)
+{
+	int x1 = sx;
+	int y1 = sy;
+	for (int i = 0; i < npoints - 1; ++i) {
+		
+		int x2 = xco + rad * cos(Deg2Rad(theta[i])), y2 = yco
+				+ rad * sin(Deg2Rad(theta[i]));
+		DrawLine(x1, y1, x2, y2, 10, colors[color]);
+		x1 = x2;
+		y1 = y2;
+	}
+	DrawLine(x1, y1, sx, sy, 10, colors[color]);
+}
+
